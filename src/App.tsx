@@ -45,6 +45,7 @@ import MobileDashboard from "./pages/Mobile/Dashboard";
 import MobileAbsensi from "./pages/Mobile/Absensi";
 import MobileScan from "./pages/Mobile/Scan";
 import MobileScanResult from "./pages/Mobile/ScanResult";
+import MobileProfile from "./pages/Mobile/Profile";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 
@@ -143,7 +144,7 @@ export default function App() {
             <Route path="/mobile/scan-result" element={<MobileScanResult />} />
             <Route path="/mobile/insiden/create" element={<MobileIncidentCreate />} />
             <Route path="/mobile/inbox" element={<MobileInbox />} />
-            <Route path="/mobile/profile" element={<div className="p-4 text-center mt-10">Profil Petugas</div>} />
+            <Route path="/mobile/profile" element={<MobileProfile />} />
           </Route>
 
           {/* Fallback Route */}
