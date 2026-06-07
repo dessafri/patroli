@@ -46,6 +46,7 @@ import MobileAbsensi from "./pages/Mobile/Absensi";
 import MobileScan from "./pages/Mobile/Scan";
 import MobileScanResult from "./pages/Mobile/ScanResult";
 import MobileProfile from "./pages/Mobile/Profile";
+import PwaInstallPrompt from "./components/common/PwaInstallPrompt";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 
@@ -74,6 +75,7 @@ export default function App() {
       <Router>
         <ScrollToTop />
         <RoutingHandler />
+        <PwaInstallPrompt />
         <Routes>
           {/* Dashboard Layout */}
           <Route element={<AppLayout />}>
