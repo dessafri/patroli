@@ -7,7 +7,7 @@ export default function LineChart() {
   return (
     <>
       <PageMeta
-        title="React.js Chart Dashboard | Patroli.site"
+        title="Patroli - Chart"
         description="This is React.js Chart Dashboard page for Patroli.site"
       />
       <PageBreadcrumb pageTitle="Line Chart" />

@@ -32,7 +32,7 @@ export default function LaporanInsiden() {
   return (
     <>
       <PageMeta
-        title="Laporan Insiden | Patroli.site"
+        title="Patroli - Laporan Insiden"
         description="Rekapitulasi riwayat insiden dan keadaan darurat"
       />
       

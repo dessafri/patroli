@@ -74,7 +74,7 @@ export default function ManajemenAkun() {
   return (
     <>
       <PageMeta
-        title="Manajemen Akun Login | Patroli.site"
+        title="Patroli - Manajemen Akun Login"
         description="Kelola hak akses dan kredensial pengguna"
       />
       

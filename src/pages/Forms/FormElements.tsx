@@ -15,7 +15,7 @@ export default function FormElements() {
   return (
     <div>
       <PageMeta
-        title="React.js Form Elements Dashboard | Patroli.site"
+        title="Patroli - Form Elements"
         description="This is React.js Form Elements  Dashboard page for Patroli.site"
       />
       <PageBreadcrumb pageTitle="Form Elements" />

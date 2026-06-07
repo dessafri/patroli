@@ -80,7 +80,7 @@ export default function InsidenList() {
   return (
     <>
       <PageMeta
-        title="Daftar Insiden | Patroli.site"
+        title="Patroli - Daftar Insiden"
         description="Pantau laporan insiden dan keadaan darurat."
       />
       

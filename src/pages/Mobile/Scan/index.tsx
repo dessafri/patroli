@@ -90,7 +90,7 @@ export default function MobileScan() {
 
   return (
     <>
-      <PageMeta title="Scan Checkpoint | Patroli.site" description="" />
+      <PageMeta title="Patroli - Scan Checkpoint" description="" />
       <div className="flex h-full flex-col bg-gray-900 text-white">
         {/* Header Transparan/Gelap */}
         <div className="flex items-center justify-between p-4 bg-gray-900/80 backdrop-blur-md absolute top-0 w-full z-10">

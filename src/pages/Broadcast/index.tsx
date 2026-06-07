@@ -35,7 +35,7 @@ export default function BroadcastMessage() {
   return (
     <>
       <PageMeta
-        title="Broadcast Pengumuman | Patroli.site"
+        title="Patroli - Broadcast Pengumuman"
         description="Kirim pengumuman atau instruksi darurat ke seluruh petugas."
       />
       

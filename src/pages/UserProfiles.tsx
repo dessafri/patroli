@@ -8,7 +8,7 @@ export default function UserProfiles() {
   return (
     <>
       <PageMeta
-        title="React.js Profile Dashboard | Patroli.site"
+        title="Patroli - Profile"
         description="This is React.js Profile Dashboard page for Patroli.site"
       />
       <PageBreadcrumb pageTitle="Profile" />

@@ -42,7 +42,7 @@ export default function MobileInbox() {
 
   return (
     <>
-      <PageMeta title="Inbox Pesan | Patroli.site" description="" />
+      <PageMeta title="Patroli - Inbox Pesan" description="" />
       <div className="flex min-h-full flex-col bg-gray-50 dark:bg-gray-900 pb-24">
         
         {/* Header Kustom */}

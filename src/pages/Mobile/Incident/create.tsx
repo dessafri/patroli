@@ -58,7 +58,7 @@ export default function MobileIncidentCreate() {
 
   return (
     <>
-      <PageMeta title="Lapor Insiden | Patroli.site" description="" />
+      <PageMeta title="Patroli - Lapor Insiden" description="" />
       <div className="flex min-h-full flex-col bg-gray-50 dark:bg-gray-900 pb-24">
         
         {/* Header Kustom Darurat */}

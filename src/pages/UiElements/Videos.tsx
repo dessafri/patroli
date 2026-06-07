@@ -10,7 +10,7 @@ export default function Videos() {
   return (
     <>
       <PageMeta
-        title="React.js Videos Tabs | Patroli.site"
+        title="Patroli - Videos Tabs"
         description="This is React.js Videos page for Patroli.site"
       />
       <PageBreadcrumb pageTitle="Videos" />

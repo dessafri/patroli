@@ -8,7 +8,7 @@ export default function Buttons() {
   return (
     <div>
       <PageMeta
-        title="React.js Buttons Dashboard | Patroli.site"
+        title="Patroli - Buttons"
         description="This is React.js Buttons Dashboard page for Patroli.site"
       />
       <PageBreadcrumb pageTitle="Buttons" />

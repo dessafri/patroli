@@ -27,7 +27,7 @@ export default function JadwalPatroli() {
   return (
     <>
       <PageMeta
-        title="Jadwal Patroli | Patroli.site"
+        title="Patroli - Jadwal Patroli"
         description="Manajemen penugasan dan rute patroli"
       />
       

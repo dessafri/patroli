@@ -198,7 +198,7 @@ export default function MobileScanResult() {
 
   return (
     <>
-      <PageMeta title="Laporan Checkpoint | Patroli.site" description="" />
+      <PageMeta title="Patroli - Laporan Checkpoint" description="" />
       <div className="flex min-h-full flex-col p-4 bg-gray-50 dark:bg-gray-900 pb-24">
         <div className="mb-6 flex items-center justify-between">
           <div>

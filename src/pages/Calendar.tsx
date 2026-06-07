@@ -118,7 +118,7 @@ const Calendar: React.FC = () => {
   return (
     <>
       <PageMeta
-        title="React.js Calendar Dashboard | Patroli.site"
+        title="Patroli - Calendar"
         description="This is React.js Calendar Dashboard page for Patroli.site"
       />
       <div className="rounded-2xl border  border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">

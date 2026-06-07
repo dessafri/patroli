@@ -86,7 +86,7 @@ export default function PetugasList() {
   return (
     <>
       <PageMeta
-        title="Manajemen Petugas | Patroli.site"
+        title="Patroli - Manajemen Petugas"
         description="Manajemen data petugas keamanan Patroli.site"
       />
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">

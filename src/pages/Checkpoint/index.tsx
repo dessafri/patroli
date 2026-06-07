@@ -134,7 +134,7 @@ export default function CheckpointList() {
   return (
     <>
       <PageMeta
-        title="Manajemen Checkpoint | Patroli.site"
+        title="Patroli - Manajemen Checkpoint"
         description="Manajemen data checkpoint keamanan Patroli.site"
       />
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">

@@ -63,7 +63,7 @@ export default function Home() {
   return (
     <>
       <PageMeta
-        title="Dashboard Keamanan | Patroli.site"
+        title="Patroli - Dashboard Keamanan"
         description="Ringkasan pemantauan dan patroli secara real-time"
       />
       

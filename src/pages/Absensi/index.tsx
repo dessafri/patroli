@@ -87,7 +87,7 @@ export default function AbsensiList() {
   return (
     <>
       <PageMeta
-        title="Manajemen Absensi | Patroli.site"
+        title="Patroli - Manajemen Absensi"
         description="Pantau absensi petugas keamanan hari ini"
       />
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">

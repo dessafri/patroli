@@ -6,7 +6,7 @@ export default function SignIn() {
   return (
     <>
       <PageMeta
-        title="React.js SignIn Dashboard | Patroli.site"
+        title="Patroli - SignIn"
         description="This is React.js SignIn Tables Dashboard page for Patroli.site"
       />
       <AuthLayout>

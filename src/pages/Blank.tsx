@@ -5,7 +5,7 @@ export default function Blank() {
   return (
     <div>
       <PageMeta
-        title="React.js Blank Dashboard | Patroli.site"
+        title="Patroli - Blank"
         description="This is React.js Blank Dashboard page for Patroli.site"
       />
       <PageBreadcrumb pageTitle="Blank Page" />

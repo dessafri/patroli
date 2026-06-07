@@ -9,7 +9,7 @@ export default function Images() {
   return (
     <>
       <PageMeta
-        title="React.js Images Dashboard | Patroli.site"
+        title="Patroli - Images"
         description="This is React.js Images page for Patroli.site"
       />
       <PageBreadcrumb pageTitle="Images" />

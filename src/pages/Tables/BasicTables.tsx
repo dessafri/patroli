@@ -7,7 +7,7 @@ export default function BasicTables() {
   return (
     <>
       <PageMeta
-        title="React.js Basic Tables Dashboard | Patroli.site"
+        title="Patroli - Basic"
         description="This is React.js Basic Tables Dashboard page for Patroli.site"
       />
       <PageBreadcrumb pageTitle="Basic Tables" />
