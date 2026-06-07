@@ -1,0 +1,687 @@
+
+PATROLI.SITE
+Aplikasi Keamanan Aset Berbasis Online
+PRODUCT REQUIREMENTS DOCUMENT
+Versi 1.0  |  Juni 2026
+
+Informasi Dokumen
+Detail
+Nama Produk
+Patroli.site
+Versi Dokumen
+1.0
+Tanggal Dibuat
+Juni 2026
+Status
+Draft - Untuk Review
+Dibuat Oleh
+Tim Product
+
+Daftar Isi
+1. Ringkasan	3
+1.1 Permasalahan yang Diselesaikan	3
+1.2 Proposisi Nilai	3
+2. Tujuan Produk	4
+3. Pengguna & Persona	4
+3.1 Segmen Pengguna	4
+3.2 Persona Pengguna	5
+4. Fitur & Modul Aplikasi	6
+4.1 Modul 1: Manajemen Checkpoint & QR Code	6
+4.2 Modul 2: Pemantauan Real-time	6
+4.3 Modul 3: Manajemen Jadwal Patroli	7
+4.4 Modul 4: Absensi Online Anti-Manipulasi	7
+4.5 Modul 5: Manajemen Insiden & Laporan	7
+4.6 Modul 6: Panic Button	8
+4.7 Modul 7: Broadcast Message	8
+4.8 Modul 8: Laporan & Analitik	8
+5. Persyaratan Fungsional Detail	9
+5.1 Otentikasi & Manajemen Pengguna	9
+5.2 Manajemen Checkpoint	9
+5.3 Pemindaian & Patroli	9
+5.4 Absensi	9
+6. Persyaratan Non-Fungsional	10
+6.1 Performa	10
+6.2 Keamanan	10
+6.3 Skalabilitas	10
+6.4 Kompatibilitas	10
+7. Arsitektur Sistem & Stack Teknologi	11
+7.1 Arsitektur Umum	11
+7.2 Komponen Utama	11
+8. Alur Pengguna (User Flow)	12
+8.1 Alur Petugas - Patroli	12
+8.2 Alur Admin - Pemantauan	12
+8.3 Alur Panic Button	12
+9. Deskripsi Layar Utama	13
+9.1 Layar Petugas	13
+9.2 Layar Admin Dashboard	13
+10. Timeline & Milestone Pengembangan	14
+11. Analisis Risiko	14
+12. Metrik Sukses & KPI	15
+13. Glosarium & Referensi	15
+
+1. Ringkasan
+Patroli.site adalah aplikasi web keamanan aset berbasis online yang dirancang khusus untuk petugas keamanan dan manajer fasilitas. Aplikasi ini mengintegrasikan teknologi QR code, GPS, dan pemantauan real-time untuk memodernisasi sistem patroli keamanan konvensional menjadi solusi digital yang efisien, transparan, dan anti-manipulasi.
+
+Visi
+Menjadi platform manajemen keamanan aset terpercaya di Indonesia yang memberikan visibilitas penuh atas aktivitas patroli secara real-time.
+
+Misi
+Menghadirkan solusi digital yang mudah digunakan, andal, dan terjangkau bagi tim keamanan di berbagai industri seperti properti, manufaktur, perkantoran, dan perhotelan.
+
+1.1 Permasalahan yang Diselesaikan
+	•	Patroli keamanan konvensional tidak dapat diverifikasi secara akurat
+	•	Tidak ada visibilitas real-time bagi manajer fasilitas terhadap aktivitas di lapangan
+	•	Manipulasi data absensi petugas yang sulit dikontrol
+	•	Lambatnya respons terhadap insiden darurat
+	•	Pelaporan insiden yang tidak terstruktur dan sulit dilacak
+	•	Komunikasi satu arah yang tidak efisien antara manajer dan petugas lapangan
+
+1.2 Proposisi Nilai
+	•	Verifikasi patroli berbasis QR code yang tidak bisa dipalsukan
+	•	Dashboard pemantauan real-time dengan peta lokasi
+	•	Absensi berbasis GPS dengan radius terbatas anti-manipulasi
+	•	Panic button untuk respons darurat instan
+	•	Broadcast message untuk komunikasi cepat ke seluruh petugas
+	•	Laporan otomatis yang dapat diekspor
+
+2. Tujuan Produk
+No
+Tujuan
+Indikator Keberhasilan
+1
+Meningkatkan akuntabilitas petugas
+100% checkpoint terpantau digital
+2
+Mempercepat respons insiden
+Notifikasi darurat < 30 detik
+3
+Menghilangkan manipulasi absensi
+0% insiden kecurangan absen
+4
+Memberikan visibilitas real-time
+Delay data < 5 detik
+5
+Menyederhanakan pelaporan
+Laporan otomatis tersedia dalam 1 klik
+6
+Meningkatkan komunikasi lapangan
+Pesan terkirim ke 100% petugas aktif
+
+
+3. Pengguna & Persona
+3.1 Segmen Pengguna
+Segmen
+Deskripsi
+Kebutuhan Utama
+Industri Properti
+Apartemen, perumahan, mall, gedung perkantoran
+Patroli multi-lokasi, laporan insiden
+Manufaktur & Industri
+Pabrik, gudang, kawasan industri
+Keamanan aset 24 jam, shift management
+Perhotelan
+Hotel, resort, villa
+Patroli tamu, keamanan area publik
+Fasilitas Kesehatan
+Rumah sakit, klinik
+Keamanan 24/7, respons cepat
+Lembaga Pendidikan
+Kampus, sekolah
+Keamanan siswa, patroli malam
+
+3.2 Persona Pengguna
+Persona 1 - Manajer Fasilitas (Admin)
+Profil
+Rudi, 42 tahun, Facility Manager di gedung perkantoran 20 lantai. Bertanggung jawab atas 15 petugas keamanan yang bekerja 3 shift.
+
+Kebutuhan:
+	•	Memantau semua aktivitas patroli dari meja kerjanya
+	•	Mendapatkan laporan harian/mingguan secara otomatis
+	•	Mengirimkan instruksi cepat ke petugas di lapangan
+	•	Melacak kehadiran petugas secara akurat
+
+Pain Points:
+	•	Tidak bisa memverifikasi apakah petugas benar-benar melakukan patroli
+	•	Laporan manual sering tidak lengkap dan lambat
+	•	Sulit menghubungi petugas saat situasi darurat
+
+Persona 2 - Petugas Keamanan
+Profil
+Andi, 28 tahun, satpam di apartemen. Bekerja shift malam 22.00-06.00. Melek teknologi dasar, menggunakan smartphone Android.
+
+Kebutuhan:
+	•	Antarmuka yang sederhana dan mudah digunakan
+	•	Proses scan QR yang cepat dan responsif
+	•	Notifikasi instruksi dari atasan secara real-time
+	•	Fitur darurat yang mudah diakses saat situasi genting
+
+Pain Points:
+	•	Catatan patroli manual sering hilang atau rusak
+	•	Tidak ada cara mudah untuk melapor ke atasan saat insiden
+	•	Proses absensi yang berbelit-belit
+
+4. Fitur & Modul Aplikasi
+4.1 Peta Modul
+Aplikasi Patroli.site terdiri dari dua sisi: Dashboard Admin (web) dan Aplikasi Petugas (mobile web).
+
+MODUL 1: MANAJEMEN CHECKPOINT & QR CODE
+
+4.1.1 Fitur Utama
+	•	Tambah, edit, hapus lokasi checkpoint
+	•	Generate QR code unik per checkpoint
+	•	Konfigurasi metadata checkpoint (nama, gedung, lantai, zona)
+	•	Preview dan cetak QR code dalam format PDF
+	•	Kelola grup checkpoint per gedung/area
+	•	Riwayat scan per checkpoint
+
+4.1.2 Detail Teknis
+	•	QR code berisi token terenkripsi unik + timestamp expired 24 jam (opsional)
+	•	Anti-replay: QR tidak dapat dipindai lebih dari X kali dalam Y menit
+	•	Dukungan format cetak A4, A5, label stiker
+
+MODUL 2: PEMANTAUAN REAL-TIME
+
+4.2.1 Dashboard Admin
+	•	Live feed aktivitas scan semua checkpoint
+	•	Peta interaktif (Google Maps) posisi petugas dan checkpoint
+	•	Status petugas: aktif patroli, standby, offline
+	•	Timeline patroli per shift
+	•	Notifikasi browser untuk event penting
+	•	Filter berdasarkan gedung, shift, tanggal
+
+4.2.2 Peta & Lokasi
+	•	Heatmap area yang sudah dan belum dipatroli
+	•	Rute patroli yang direncanakan vs aktual
+	•	Foto yang diunggah petugas tampil di peta
+
+MODUL 3: MANAJEMEN JADWAL PATROLI
+
+4.3.1 Fitur
+	•	Buat template rute patroli (urutan checkpoint)
+	•	Jadwalkan patroli berulang (harian, mingguan)
+	•	Assign rute ke petugas atau tim
+	•	Konfigurasi waktu target di setiap checkpoint
+	•	Alert jika petugas melewati checkpoint tanpa scan
+	•	Alert jika scan terlambat dari jadwal
+
+MODUL 4: ABSENSI ONLINE ANTI-MANIPULASI
+
+4.4.1 Fitur Absensi
+	•	Clock in / Clock out berbasis GPS
+	•	Radius geofence yang dapat dikonfigurasi (default: 100 meter)
+	•	Foto selfie wajah saat absen (opsional, face verification)
+	•	Timestamp server (bukan waktu perangkat) untuk mencegah manipulasi jam
+	•	Riwayat absensi lengkap per petugas
+	•	Laporan kehadiran bulanan otomatis
+
+4.4.2 Mekanisme Anti-Manipulasi
+	•	GPS diverifikasi server, bukan hanya perangkat
+	•	Deteksi VPN/GPS spoofing (opsional)
+	•	Tidak dapat absen di luar radius yang ditentukan
+	•	Waktu absen menggunakan server time, bukan device time
+
+MODUL 5: MANAJEMEN INSIDEN & LAPORAN
+
+4.5.1 Pelaporan Insiden
+	•	Form laporan insiden saat atau setelah scan checkpoint
+	•	Upload foto/video dari kamera perangkat
+	•	Kategori insiden: maling, kebakaran, kerusakan, mencurigakan, dll.
+	•	Tingkat prioritas: rendah, sedang, tinggi, kritis
+	•	Lokasi otomatis (GPS + checkpoint yang dipindai)
+	•	Status tindak lanjut: dilaporkan, diproses, selesai
+
+4.5.2 Dashboard Insiden Admin
+	•	List insiden dengan filter status dan prioritas
+	•	Assign insiden ke petugas/tim
+	•	Histori tindak lanjut dan komentar
+	•	Notifikasi real-time insiden baru
+
+MODUL 6: PANIC BUTTON
+
+4.6.1 Fitur Darurat
+	•	Tombol panic button besar dan mudah diakses di halaman utama petugas
+	•	Tahan tombol selama 5 detik dengan progres bar animasi untuk mencegah tekan tidak sengaja
+	•	Kirim alert + lokasi GPS real-time ke SEMUA admin aktif
+	•	Notifikasi push + email + SMS (opsional) ke admin
+	•	Log waktu, lokasi, dan identitas petugas yang menekan
+	•	Tampil di dashboard admin sebagai peringatan merah prioritas tinggi
+	•	Petugas dapat menambah catatan singkat setelah menekan
+
+MODUL 7: BROADCAST MESSAGE
+
+4.7.1 Fitur Pesan Siaran
+	•	Admin kirim pesan teks ke semua petugas atau grup tertentu
+	•	Petugas terima notifikasi in-app dan push notification
+	•	Riwayat pesan tersimpan di inbox petugas
+	•	Konfirmasi baca (read receipt)
+	•	Template pesan untuk instruksi rutin
+	•	Jadwalkan pengiriman pesan
+
+MODUL 8: LAPORAN & ANALITIK
+
+4.8.1 Laporan Tersedia
+	•	Laporan aktivitas patroli harian/mingguan/bulanan
+	•	Laporan kehadiran petugas
+	•	Laporan insiden (summary + detail)
+	•	Laporan cakupan checkpoint
+	•	Laporan performa petugas
+
+4.8.2 Format Export
+	•	PDF (laporan terformat dengan logo perusahaan)
+	•	Excel/CSV untuk analisis lebih lanjut
+	•	Jadwal laporan otomatis via email
+
+5. Persyaratan Fungsional Detail
+5.1 Otentikasi & Manajemen Pengguna
+ID
+Requirement
+Prioritas
+FR-001
+Login dengan email dan password
+P1 - Wajib
+FR-003
+Role-based access: Super Admin, Admin, Supervisor, Petugas
+P1 - Wajib
+FR-005
+Session management dengan token JWT (expire 8 jam)
+P1 - Wajib
+FR-007
+Log aktivitas login (IP, device, waktu)
+P2 - Penting
+
+5.2 Manajemen Checkpoint
+ID
+Requirement
+Prioritas
+FR-010
+CRUD lokasi dan checkpoint
+P1 - Wajib
+FR-011
+Generate QR code unik per checkpoint
+P1 - Wajib
+FR-012
+QR code berisi: checkpoint_id + site_id + checksum
+P1 - Wajib
+FR-013
+Export QR code ke PDF siap cetak
+P1 - Wajib
+FR-014
+QR code dapat di-disable/enable oleh admin
+P2 - Penting
+FR-015
+Lampirkan foto lokasi checkpoint
+P3 - Nice to have
+
+5.3 Pemindaian & Patroli
+ID
+Requirement
+Prioritas
+FR-020
+Scan QR via kamera browser (tidak perlu install app)
+P1 - Wajib
+FR-021
+Kirim hasil scan + GPS + timestamp ke server dalam < 3 detik
+P1 - Wajib
+FR-022
+Upload foto saat scan (wajib/opsional, konfigurabel per checkpoint)
+P1 - Wajib
+FR-023
+Tambah catatan teks saat scan
+P2 - Penting
+FR-024
+Scan tetap berfungsi saat sinyal lemah (antrian offline)
+P2 - Penting
+FR-025
+Validasi: QR harus valid dan aktif untuk diterima server
+P1 - Wajib
+
+5.4 Absensi
+ID
+Requirement
+Prioritas
+FR-030
+Clock in hanya dapat dilakukan dalam radius yang dikonfigurasi
+P1 - Wajib
+FR-031
+Koordinat GPS divalidasi di server, bukan hanya di perangkat
+P1 - Wajib
+FR-032
+Waktu absen menggunakan server timestamp
+P1 - Wajib
+FR-033
+Foto selfie opsional saat clock in
+P2 - Penting
+FR-034
+Hitung total jam kerja otomatis dari clock in-out
+P1 - Wajib
+FR-035
+Alert admin jika petugas clock in di luar radius
+P1 - Wajib
+
+6. Persyaratan Non-Fungsional
+6.1 Performa
+Metrik
+Target
+Kondisi
+Latency API
+< 500ms
+95th percentile, beban normal
+Real-time update dashboard
+< 5 detik
+Sejak scan dilakukan
+Upload foto
+< 10 detik
+Foto max 5MB, jaringan 3G
+Waktu muat halaman
+< 3 detik
+First Contentful Paint, 4G
+Panic button alert
+< 30 detik
+Dari tekan hingga notif admin
+Uptime
+> 99.5%
+Per bulan, tidak termasuk maintenance
+
+6.2 Keamanan
+	•	HTTPS wajib di semua endpoint
+	•	Enkripsi data sensitif di database (AES-256)
+	•	Token JWT dengan expiry dan refresh token
+	•	Rate limiting pada endpoint kritis (login, scan, panic button)
+	•	SQL injection dan XSS protection
+	•	Audit log untuk semua aksi kritis admin
+	•	Data backup harian dengan retensi 90 hari
+
+6.3 Skalabilitas
+	•	Arsitektur dapat menangani hingga 10.000 petugas aktif bersamaan
+	•	Horizontal scaling untuk API server
+	•	CDN untuk aset statis dan gambar
+	•	Database read replica untuk query laporan
+
+6.4 Kompatibilitas
+Platform
+Versi Minimum
+Catatan
+Android Chrome
+Chrome 80+, Android 8+
+Target utama petugas
+iOS Safari
+iOS 13+, Safari 13+
+Didukung penuh
+Desktop Chrome
+Chrome 80+
+Dashboard admin utama
+Desktop Firefox
+Firefox 75+
+Didukung
+Desktop Edge
+Edge 80+
+Didukung
+Resolusi desktop
+1280x720 minimum
+Dashboard admin
+
+7. Arsitektur Sistem & Stack Teknologi
+7.1 Arsitektur Umum
+Aplikasi menggunakan arsitektur client-server berbasis web dengan komunikasi real-time menggunakan WebSocket atau Server-Sent Events (SSE) untuk update dashboard.
+
+Frontend
+React.js + Progressive Web App (PWA) untuk petugas dan dashboard admin
+
+Backend
+Node.js (NestJS) atau Laravel PHP - RESTful API + WebSocket server
+
+Database
+PostgreSQL (data utama) + Redis (cache & real-time sessions)
+
+Storage
+AWS S3 atau Google Cloud Storage untuk foto dan dokumen
+
+Maps
+Google Maps Platform (Maps JavaScript API + Geocoding API)
+
+Notifikasi
+Firebase Cloud Messaging (FCM) untuk push notification
+
+7.2 Komponen Utama
+Komponen
+Teknologi
+Fungsi
+Web App (Petugas)
+React PWA
+Interface scan QR, absensi, panic button
+Web Dashboard (Admin)
+React.js
+Monitoring, laporan, konfigurasi
+API Server
+NestJS / Laravel
+Business logic, validasi, orkestrasi
+Real-time Server
+Socket.IO / SSE
+Live update dashboard
+Job Queue
+Bull + Redis
+Notifikasi async, laporan, email
+Database
+PostgreSQL
+Penyimpanan data utama
+Cache Layer
+Redis
+Session, rate limiting, real-time
+
+8. Alur Pengguna (User Flow)
+8.1 Alur Petugas - Patroli
+	•	Buka aplikasi Patroli.site di browser smartphone
+	•	Login dengan username dan password
+	•	Sistem verifikasi lokasi GPS untuk absensi
+	•	Clock in (hanya berhasil jika dalam radius lokasi kerja)
+	•	Sistem konfirmasi absensi berhasil
+	•	Petugas mulai patroli mengikuti rute yang ditentukan
+	•	Di setiap checkpoint: buka kamera, arahkan ke QR code
+	•	Sistem validasi QR dan lokasi GPS secara bersamaan
+	•	Upload foto checkpoint (jika dikonfigurasi wajib)
+	•	Tambah catatan insiden jika diperlukan
+	•	Konfirmasi scan berhasil, dashboard admin update real-time
+	•	Ulangi langkah 6-10 untuk semua checkpoint
+	•	Selesai patroli, clock out
+
+8.2 Alur Admin - Pemantauan
+	•	Login ke dashboard web dari komputer/tablet
+	•	Lihat ringkasan status patroli di halaman utama
+	•	Pantau peta real-time posisi dan aktivitas petugas
+	•	Terima notifikasi insiden atau panic button
+	•	Buka detail insiden, assign ke petugas/supervisor
+	•	Kirim broadcast message jika diperlukan
+	•	Review dan approve laporan absensi
+	•	Download laporan harian/mingguan
+
+8.3 Alur Panic Button
+	•	Petugas menghadapi situasi darurat
+	•	Tekan dan tahan tombol merah besar di halaman utama selama 5 detik
+	•	Sistem merekam lokasi GPS, waktu, dan identitas petugas
+	•	Alert dikirim ke SEMUA admin aktif (push notification + in-app)
+	•	Dashboard admin menampilkan peringatan merah prioritas tinggi
+	•	Admin menghubungi petugas dan mengambil tindakan
+	•	Admin menutup alert setelah situasi teratasi
+
+9. Deskripsi Layar Utama
+9.1 Layar Petugas
+Halaman Login
+	•	Form email/username + password
+	•	Tombol login dengan loading state
+
+Halaman Utama Petugas
+	•	Status patroli saat ini (aktif/tidak aktif)
+	•	Tombol Clock In / Clock Out
+	•	Tombol PANIC BUTTON (merah, besar, 1/3 layar)
+	•	Notifikasi terbaru dari admin
+	•	Checkpoint terakhir yang dipindai
+
+Halaman Scan QR
+	•	Kamera langsung terbuka
+	•	Frame panduan posisi QR code
+	•	Feedback vibrate + suara saat scan berhasil
+	•	Form: foto + catatan setelah scan berhasil
+
+9.2 Layar Admin Dashboard
+Halaman Overview
+	•	KPI cards: total petugas aktif, patroli berjalan, insiden hari ini, checkpoint tercakup
+	•	Live activity feed (timeline real-time aktivitas semua petugas)
+	•	Peta interaktif dengan marker posisi petugas
+
+Halaman Manajemen Petugas
+	•	Tabel petugas dengan status (online/offline/patroli)
+	•	Detail petugas: jadwal, riwayat patroli, absensi
+	•	Tambah/edit/nonaktifkan akun petugas
+
+Halaman Insiden
+	•	List insiden dengan filter (status, prioritas, tanggal, petugas)
+	•	Detail insiden: foto, lokasi, keterangan, timeline tindak lanjut
+	•	Assign dan update status insiden
+
+10. Timeline & Milestone Pengembangan
+10.1 Fase Pengembangan
+Fase
+Durasi
+Deliverable Utama
+Status
+Fase 0: Perencanaan
+2 minggu
+PRD, wireframe, arsitektur sistem
+Selesai
+Fase 1: MVP Core
+6 minggu
+Login, QR scan, checkpoint, absensi GPS dasar
+Planned
+Fase 2: Real-time & Monitoring
+4 minggu
+Dashboard real-time, peta, notifikasi
+Planned
+Fase 3: Insiden & Panic
+3 minggu
+Laporan insiden, panic button, broadcast
+Planned
+Fase 4: Laporan & Analitik
+3 minggu
+Export laporan, analitik, dasbor KPI
+Planned
+Fase 5: Testing & QA
+2 minggu
+UAT, load testing, bug fixing
+Planned
+Fase 6: Soft Launch
+2 minggu
+Pilot dengan 3-5 klien perdana
+Planned
+Fase 7: Launch Publik
+Ongoing
+Go-live penuh, onboarding skala besar
+Planned
+
+10.2 Total Estimasi
+MVP ke Produksi
+Estimasi 22 minggu (sekitar 5.5 bulan) dari kick-off pengembangan hingga soft launch
+
+11. Analisis Risiko
+Risiko
+Dampak
+Kemungkinan
+Mitigasi
+Sinyal internet lemah di lokasi patroli
+Tinggi
+Tinggi
+Implementasi offline queue: scan disimpan lokal dan dikirim saat online
+GPS tidak akurat di dalam gedung
+Tinggi
+Sedang
+Indoor positioning alternatif (Wi-Fi triangulation) atau toleransi radius lebih besar
+QR code rusak/hilang di lapangan
+Sedang
+Sedang
+Checkpoint backup via NFC tag atau kode manual darurat
+Panic button ditekan tidak sengaja
+Rendah
+Sedang
+Konfirmasi 2 tap, batas waktu 5 detik untuk membatalkan
+Skalabilitas saat puncak penggunaan
+Tinggi
+Rendah
+Load testing sebelum launch, auto-scaling infrastruktur
+Keamanan data petugas dan aset klien
+Tinggi
+Rendah
+Enkripsi end-to-end, audit keamanan berkala, sertifikasi ISO 27001
+Adopsi rendah dari petugas
+Tinggi
+Sedang
+Pelatihan, UX sederhana, dukungan multi-bahasa
+
+12. Metrik Sukses & KPI
+12.1 KPI Produk
+Metrik
+Target 3 Bulan
+Target 6 Bulan
+Target 12 Bulan
+Jumlah klien aktif
+50
+200
+500
+Total petugas terdaftar
+500
+3.000
+10.000
+Scan QR per hari
+2.000
+15.000
+50.000
+MAU (Monthly Active Users)
+400
+2.500
+8.000
+User retention rate
+> 70%
+> 80%
+> 85%
+App crash rate
+< 1%
+< 0.5%
+< 0.2%
+Customer satisfaction (CSAT)
+> 3.5/5
+> 4.0/5
+> 4.3/5
+
+
+13. Glosarium & Referensi
+13.1 Glosarium
+Istilah
+Definisi
+Checkpoint
+Titik lokasi fisik yang dilengkapi QR code sebagai pos pemeriksaan patroli
+QR Code
+Quick Response Code, kode dua dimensi yang dipindai kamera untuk mengidentifikasi checkpoint
+Geofence
+Batas wilayah virtual berbasis GPS yang digunakan untuk validasi lokasi absensi
+Panic Button
+Tombol darurat digital yang mengirim alert instan ke admin saat petugas dalam bahaya
+Broadcast Message
+Pesan yang dikirimkan serentak ke semua atau grup petugas oleh admin
+PWA
+Progressive Web App, aplikasi web yang berfungsi seperti aplikasi native di smartphone
+Real-time
+Pembaruan data yang terjadi hampir instan (< 5 detik) tanpa perlu refresh halaman
+JWT
+JSON Web Token, standar otentikasi stateless yang digunakan untuk sesi pengguna
+Multi-tenant
+Arsitektur di mana satu platform melayani banyak klien/perusahaan secara terpisah
+Shift
+Periode kerja petugas, umumnya 8 jam (pagi, siang, malam)
+
+13.2 Referensi
+	•	OWASP Top 10 Web Application Security Risks (2021)
+	•	Google Maps Platform Documentation - maps.google.com/developers
+	•	Firebase Cloud Messaging - firebase.google.com/docs/cloud-messaging
+	•	W3C Geolocation API Specification
+	•	ISO/IEC 27001:2022 - Information Security Management
+
+-- Akhir Dokumen PRD Patroli.site v1.0 --
+Dokumen ini bersifat rahasia dan hanya untuk penggunaan internal.
