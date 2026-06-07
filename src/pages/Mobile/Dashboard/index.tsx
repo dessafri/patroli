@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
 
 export default function MobileDashboard() {
   const [holdProgress, setHoldProgress] = useState(0);
   const [isHolding, setIsHolding] = useState(false);
-  const holdTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const holdTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const holdDuration = 5000; // 5 detik
 
   const triggerPanic = () => {

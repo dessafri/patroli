@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router";
 import PageMeta from "../../../components/common/PageMeta";
 
@@ -43,7 +42,7 @@ export default function MobileInbox() {
 
   return (
     <>
-      <PageMeta title="Inbox Pesan | Patroli.site" />
+      <PageMeta title="Inbox Pesan | Patroli.site" description="" />
       <div className="flex min-h-full flex-col bg-gray-50 dark:bg-gray-900 pb-24">
         
         {/* Header Kustom */}

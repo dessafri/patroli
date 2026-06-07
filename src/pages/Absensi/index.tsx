@@ -65,7 +65,7 @@ export default function AbsensiList() {
   const [filterDate, setFilterDate] = useState("");
   const [filterStatus, setFilterStatus] = useState("Semua");
 
-  const handleDateChange = React.useCallback((selectedDates: any, dateStr: string) => {
+  const handleDateChange = React.useCallback((_: any, dateStr: string) => {
     setFilterDate(dateStr);
   }, []);
 
@@ -222,7 +222,7 @@ export default function AbsensiList() {
                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                       <Badge
                         size="sm"
-                        color={absen.status === "Active" ? "success" : "gray"}
+                        color={absen.status === "Active" ? "success" : "light"}
                       >
                         {absen.status === "Active" ? "Sedang Bertugas" : "Selesai"}
                       </Badge>

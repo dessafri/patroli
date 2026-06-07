@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import PageMeta from "../../../components/common/PageMeta";
@@ -58,7 +58,7 @@ export default function MobileIncidentCreate() {
 
   return (
     <>
-      <PageMeta title="Lapor Insiden | Patroli.site" />
+      <PageMeta title="Lapor Insiden | Patroli.site" description="" />
       <div className="flex min-h-full flex-col bg-gray-50 dark:bg-gray-900 pb-24">
         
         {/* Header Kustom Darurat */}

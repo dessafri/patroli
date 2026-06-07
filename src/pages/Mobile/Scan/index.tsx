@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { Html5QrcodeScanner, Html5QrcodeScanType } from "html5-qrcode";
 import PageMeta from "../../../components/common/PageMeta";
 
 export default function MobileScan() {
   const navigate = useNavigate();
-  const [scanError, setScanError] = useState<string | null>(null);
+  const [scanError] = useState<string | null>(null);
   const scannerRef = useRef<Html5QrcodeScanner | null>(null);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function MobileScan() {
     };
 
     // Callback ketika scan berhasil
-    const onScanSuccess = (decodedText: string, decodedResult: any) => {
+    const onScanSuccess = (decodedText: string) => {
       // 1. Beri feedback getar (vibrate 200ms)
       if (navigator.vibrate) {
         navigator.vibrate(200);
@@ -68,7 +68,7 @@ export default function MobileScan() {
     };
 
     // Callback ketika scan gagal (hanya peringatan per frame, biasanya diabaikan)
-    const onScanFailure = (error: string) => {
+    const onScanFailure = () => {
       // Menghindari spam console, kita hanya log jika perlu debugging
       // console.warn(`Code scan error = ${error}`);
     };
@@ -90,7 +90,7 @@ export default function MobileScan() {
 
   return (
     <>
-      <PageMeta title="Scan Checkpoint | Patroli.site" />
+      <PageMeta title="Scan Checkpoint | Patroli.site" description="" />
       <div className="flex h-full flex-col bg-gray-900 text-white">
         {/* Header Transparan/Gelap */}
         <div className="flex items-center justify-between p-4 bg-gray-900/80 backdrop-blur-md absolute top-0 w-full z-10">

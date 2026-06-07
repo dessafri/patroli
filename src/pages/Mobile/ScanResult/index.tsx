@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useSearchParams, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import Webcam from "react-webcam";
@@ -198,7 +198,7 @@ export default function MobileScanResult() {
 
   return (
     <>
-      <PageMeta title="Laporan Checkpoint | Patroli.site" />
+      <PageMeta title="Laporan Checkpoint | Patroli.site" description="" />
       <div className="flex min-h-full flex-col p-4 bg-gray-50 dark:bg-gray-900 pb-24">
         <div className="mb-6 flex items-center justify-between">
           <div>

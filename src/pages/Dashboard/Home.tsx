@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Swal from "sweetalert2";
 import PageMeta from "../../components/common/PageMeta";
 import KpiCards from "../../components/dashboard/KpiCards";

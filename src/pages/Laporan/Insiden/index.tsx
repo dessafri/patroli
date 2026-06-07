@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PageMeta from "../../../components/common/PageMeta";
 import Swal from "sweetalert2";
 

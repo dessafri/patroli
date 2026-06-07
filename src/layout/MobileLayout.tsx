@@ -1,4 +1,3 @@
-import React from "react";
 import { Outlet, Link, useLocation } from "react-router";
 import { UserIcon, CheckCircleIcon } from "../icons";
 import { OfflineQueueProvider, useOfflineQueue } from "../context/OfflineQueueContext";

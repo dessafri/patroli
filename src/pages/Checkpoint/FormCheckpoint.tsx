@@ -173,6 +173,14 @@ export default function FormCheckpoint() {
           longitude: data.longitude,
           radius: data.radius,
           status: data.status,
+          provinceId: "",
+          provinceName: "",
+          regencyId: "",
+          regencyName: "",
+          districtId: "",
+          districtName: "",
+          villageId: "",
+          villageName: "",
         });
       }
     }
@@ -449,7 +457,7 @@ export default function FormCheckpoint() {
                     step="any"
                     id="latitude"
                     name="latitude"
-                    value={String(formData.latitude)}
+                    value={formData.latitude}
                     onChange={handleNumberChange}
                     required
                   />
@@ -461,7 +469,7 @@ export default function FormCheckpoint() {
                     step="any"
                     id="longitude"
                     name="longitude"
-                    value={String(formData.longitude)}
+                    value={formData.longitude}
                     onChange={handleNumberChange}
                     required
                   />
@@ -472,7 +480,7 @@ export default function FormCheckpoint() {
                     type="number"
                     id="radius"
                     name="radius"
-                    value={String(formData.radius)}
+                    value={formData.radius}
                     onChange={handleNumberChange}
                     required
                   />

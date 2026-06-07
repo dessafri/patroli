@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
 import PageMeta from "../../components/common/PageMeta";
 import {
@@ -65,7 +65,7 @@ const dummyData: Insiden[] = [
 ];
 
 export default function InsidenList() {
-  const [data, setData] = useState<Insiden[]>(dummyData);
+  const [data] = useState<Insiden[]>(dummyData);
   const [filterStatus, setFilterStatus] = useState<string>("Semua");
   const [filterPrioritas, setFilterPrioritas] = useState<string>("Semua");
   const [selectedInsiden, setSelectedInsiden] = useState<Insiden | null>(null);
@@ -197,7 +197,7 @@ export default function InsidenList() {
                           size="sm"
                           color={
                             item.status === "Baru" ? "error" :
-                            item.status === "Diproses" ? "brand" : "success"
+                            item.status === "Diproses" ? "primary" : "success"
                           }
                         >
                           {item.status}
@@ -263,7 +263,7 @@ export default function InsidenList() {
                     <Badge size="sm" color={selectedInsiden.prioritas === "Kritis" ? "error" : selectedInsiden.prioritas === "Sedang" ? "warning" : "success"}>
                       Prioritas: {selectedInsiden.prioritas}
                     </Badge>
-                    <Badge size="sm" color={selectedInsiden.status === "Baru" ? "error" : selectedInsiden.status === "Diproses" ? "brand" : "success"}>
+                    <Badge size="sm" color={selectedInsiden.status === "Baru" ? "error" : selectedInsiden.status === "Diproses" ? "primary" : "success"}>
                       Status: {selectedInsiden.status}
                     </Badge>
                   </div>
