@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
@@ -10,6 +11,20 @@ export default function SignInForm() {
   const [isChecked, setIsChecked] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    localStorage.setItem("isLoggedIn", "true");
+    
+    // Redirect logic: jika petugas atau ukuran layar kecil, ke mobile
+    if (email === "petugas@patroli.site" || window.innerWidth <= 768) {
+      navigate("/mobile/dashboard", { replace: true });
+    } else {
+      navigate("/", { replace: true });
+    }
+  };
+
   return (
     <div className="flex flex-col flex-1">
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto pt-10">
@@ -23,7 +38,7 @@ export default function SignInForm() {
             </p>
           </div>
           <div>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="space-y-6">
                 <div>
                   <Label>
@@ -34,6 +49,7 @@ export default function SignInForm() {
                     placeholder="info@gmail.com" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
                 <div>
@@ -46,6 +62,7 @@ export default function SignInForm() {
                       placeholder="Enter your password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                      required
                     />
                     <span
                       onClick={() => setShowPassword(!showPassword)}
@@ -68,7 +85,7 @@ export default function SignInForm() {
                   </div>
                 </div>
                 <div>
-                  <Button className="w-full" size="sm">
+                  <Button className="w-full" size="sm" type="submit">
                     Sign in
                   </Button>
                 </div>

@@ -2,15 +2,22 @@ import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from
 import { useEffect } from "react";
 import SignIn from "./pages/AuthPages/SignIn";
 
-function ResponsiveRedirect() {
+function RoutingHandler() {
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     const isMobile = window.innerWidth <= 768 || /Mobi|Android/i.test(navigator.userAgent);
-    
-    // Redirect ke PWA jika membuka halaman root dari mobile
-    if (isMobile && location.pathname === "/") {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+    // 1. Cek Login
+    if (!isLoggedIn && location.pathname !== "/signin") {
+      navigate("/signin", { replace: true });
+      return;
+    }
+
+    // 2. Redirect ke PWA jika membuka halaman root dari mobile & sudah login
+    if (isLoggedIn && isMobile && location.pathname === "/") {
       navigate("/mobile/dashboard", { replace: true });
     }
   }, [location.pathname, navigate]);
@@ -65,7 +72,7 @@ export default function App() {
     <>
       <Router>
         <ScrollToTop />
-        <ResponsiveRedirect />
+        <RoutingHandler />
         <Routes>
           {/* Dashboard Layout */}
           <Route element={<AppLayout />}>
