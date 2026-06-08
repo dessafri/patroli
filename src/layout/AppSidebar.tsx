@@ -338,22 +338,17 @@ const AppSidebar: React.FC = () => {
       >
         <Link to="/">
           {isExpanded || isHovered || isMobileOpen ? (
-            <>
+            <div className="flex items-center gap-2">
               <img
-                className="dark:hidden"
-                src="/images/logo/logo.svg"
+                src="/images/logo/logo-icon.svg"
                 alt="Logo"
-                width={150}
-                height={40}
+                width={32}
+                height={32}
               />
-              <img
-                className="hidden dark:block"
-                src="/images/logo/logo-dark.svg"
-                alt="Logo"
-                width={150}
-                height={40}
-              />
-            </>
+              <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                Patroli
+              </span>
+            </div>
           ) : (
             <img
               src="/images/logo/logo-icon.svg"
@@ -390,8 +385,8 @@ const AppSidebar: React.FC = () => {
 
       </div>
       
-      {/* Logout Button */}
-      <div className="mt-auto p-4 mb-4 border-t border-gray-200 dark:border-gray-800">
+      {/* Logout Button (Hidden on Desktop) */}
+      <div className="mt-auto p-4 mb-4 border-t border-gray-200 dark:border-gray-800 lg:hidden">
         <button
           onClick={handleLogout}
           className={`flex w-full items-center gap-3 px-3 py-2 font-medium text-error-600 rounded-lg group text-theme-sm hover:bg-error-50 dark:text-error-500 dark:hover:bg-error-500/10 transition-colors ${

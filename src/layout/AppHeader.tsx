@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import { useSidebar } from "../context/SidebarContext";
 
 import NotificationDropdown from "../components/header/NotificationDropdown";
+import UserDropdown from "../components/header/UserDropdown";
 
 const AppHeader: React.FC = () => {
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
@@ -76,23 +77,25 @@ const AppHeader: React.FC = () => {
             {/* Cross Icon */}
           </button>
 
-          <Link to="/" className="lg:hidden">
+          <Link to="/" className="lg:hidden flex items-center gap-2">
             <img
-              className="dark:hidden"
-              src="./images/logo/logo.svg"
+              src="/images/logo/logo-icon.svg"
               alt="Logo"
+              width={32}
+              height={32}
             />
-            <img
-              className="hidden dark:block"
-              src="./images/logo/logo-dark.svg"
-              alt="Logo"
-            />
+            <span className="text-xl font-bold text-gray-900 dark:text-white">
+              Patroli
+            </span>
           </Link>
 
         </div>
 
         <div className="flex items-center gap-2 2xsm:gap-3 lg:justify-end lg:w-full lg:px-0">
           <NotificationDropdown />
+          <div className="hidden lg:block">
+            <UserDropdown />
+          </div>
         </div>
       </div>
     </header>
