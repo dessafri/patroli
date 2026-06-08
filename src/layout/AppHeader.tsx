@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 
-import { Link } from "react-router";
 import { useSidebar } from "../context/SidebarContext";
 
 import NotificationDropdown from "../components/header/NotificationDropdown";
@@ -35,11 +34,11 @@ const AppHeader: React.FC = () => {
   }, []);
 
   return (
-    <header className="sticky top-0 flex w-full bg-white border-gray-200 z-40 dark:border-gray-800 dark:bg-gray-900 lg:border-b">
-      <div className="flex flex-col items-center justify-between grow lg:flex-row lg:px-6">
-        <div className="flex items-center justify-between w-full gap-2 px-3 py-3 border-b border-gray-200 dark:border-gray-800 sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4">
+    <header className="sticky top-0 flex w-full bg-white border-b border-gray-200 z-40 dark:border-gray-800 dark:bg-gray-900">
+      <div className="flex items-center justify-between w-full px-4 py-3 lg:px-6 lg:py-4">
+        <div className="flex items-center">
           <button
-            className="items-center justify-center w-10 h-10 text-gray-500 border-gray-200 rounded-lg z-40 dark:border-gray-800 lg:flex dark:text-gray-400 lg:h-11 lg:w-11 lg:border"
+            className="items-center justify-center w-10 h-10 text-gray-500 border border-gray-200 rounded-lg z-40 dark:border-gray-800 flex dark:text-gray-400 lg:h-11 lg:w-11"
             onClick={handleToggle}
             aria-label="Toggle Sidebar"
           >
@@ -74,24 +73,10 @@ const AppHeader: React.FC = () => {
                 />
               </svg>
             )}
-            {/* Cross Icon */}
           </button>
-
-          <Link to="/" className="lg:hidden flex items-center gap-2">
-            <img
-              src="/images/logo/logo-icon.svg"
-              alt="Logo"
-              width={32}
-              height={32}
-            />
-            <span className="text-xl font-bold text-gray-900 dark:text-white">
-              Patroli
-            </span>
-          </Link>
-
         </div>
 
-        <div className="flex items-center gap-2 2xsm:gap-3 lg:justify-end lg:w-full lg:px-0">
+        <div className="flex items-center gap-2 2xsm:gap-3">
           <NotificationDropdown />
           <div className="hidden lg:block">
             <UserDropdown />
