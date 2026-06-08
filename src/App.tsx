@@ -17,7 +17,8 @@ function RoutingHandler() {
     }
 
     // 2. Redirect ke PWA jika membuka halaman root dari mobile & sudah login
-    if (isLoggedIn && isMobile && location.pathname === "/") {
+    const userRole = localStorage.getItem("userRole");
+    if (isLoggedIn && isMobile && location.pathname === "/" && userRole !== "admin") {
       navigate("/mobile/dashboard", { replace: true });
     }
   }, [location.pathname, navigate]);

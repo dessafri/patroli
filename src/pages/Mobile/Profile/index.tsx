@@ -6,6 +6,7 @@ export default function MobileProfile() {
 
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userRole");
     navigate("/signin", { replace: true });
   };
 

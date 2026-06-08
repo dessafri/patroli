@@ -18,6 +18,7 @@ export default function UserDropdown() {
 
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userRole");
     navigate("/signin", { replace: true });
   };
   return (

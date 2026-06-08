@@ -17,10 +17,12 @@ export default function SignInForm() {
     e.preventDefault();
     localStorage.setItem("isLoggedIn", "true");
     
-    // Redirect logic: jika petugas atau ukuran layar kecil, ke mobile
-    if (email === "petugas@patroli.site" || window.innerWidth <= 768) {
+    // Redirect logic: jika petugas, ke mobile
+    if (email === "petugas@patroli.site") {
+      localStorage.setItem("userRole", "petugas");
       navigate("/mobile/dashboard", { replace: true });
     } else {
+      localStorage.setItem("userRole", "admin");
       navigate("/", { replace: true });
     }
   };
