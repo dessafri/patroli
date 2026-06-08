@@ -50,7 +50,7 @@ export default function PwaInstallPrompt() {
   if (!showPrompt) return null;
 
   return (
-    <div className="fixed bottom-20 left-4 right-4 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-theme-lg border border-gray-200 dark:border-gray-700 z-50 flex flex-col gap-3 animate-in slide-in-from-bottom-5">
+    <div className="fixed bottom-20 left-4 right-4 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-theme-lg border border-gray-200 dark:border-gray-700 z-50 flex flex-col gap-3 animate-in slide-in-from-bottom-5 md:hidden">
       <div className="flex justify-between items-start">
         <div className="flex items-center gap-3">
           <div className="size-10 bg-brand-100 dark:bg-brand-900/30 text-brand-500 rounded-xl flex items-center justify-center">
