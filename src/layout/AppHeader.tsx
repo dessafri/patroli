@@ -78,7 +78,7 @@ const AppHeader: React.FC = () => {
 
         <div className="flex items-center justify-end w-full gap-2 2xsm:gap-3 ml-auto">
           <NotificationDropdown />
-          <div className="hidden lg:block">
+          <div className="block">
             <UserDropdown />
           </div>
         </div>

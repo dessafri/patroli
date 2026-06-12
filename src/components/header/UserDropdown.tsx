@@ -31,9 +31,9 @@ export default function UserDropdown() {
           A
         </span>
 
-        <span className="block mr-1 font-medium text-theme-sm">Admin</span>
+        <span className="hidden lg:block mr-1 font-medium text-theme-sm">Admin</span>
         <svg
-          className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
+          className={`hidden lg:block stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
           width="18"
