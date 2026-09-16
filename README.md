@@ -8,22 +8,11 @@ Patroli.site adalah platform digital terintegrasi untuk manajemen keamanan prope
 
 ## 📸 Preview Dashboard & Mobile PWA
 
-```
-+-----------------------------------------------------------------------------------+
-|  PATROLI.SITE ADMIN DASHBOARD                                     [Admin: Des] ⚙️ |
-+-----------------------------------------------------------------------------------+
-|  [Petugas Aktif: 12]   [Checkpoints: 48]   [Patroli Hari Ini: 86]   [Insiden: 0]  |
-+-----------------------------------------------------------------------------------+
-|  📍 PETA PATROLI REALTIME                |  📋 LIVE ACTIVITY FEED                 |
-|  +------------------------------------+  |  [08:15] Budi S. scan Gerbang Depan    |
-|  |   [Gedung A] 🟢                    |  |  [08:10] Andi P. scan Area Parkir B1   |
-|  |             \                      |  |  [07:55] Rian K. Clock In (GPS OK)     |
-|  |              🟢 [Basement 1]       |  |  [07:30] Sistem Backup Log OK          |
-|  +------------------------------------+  +----------------------------------------+
-+-----------------------------------------------------------------------------------+
-|  PWA SATPAM: [📷 Scan QR] -> [📍 Validasi GPS <=30m] -> [🖼️ Auto-Watermark Foto]   |
-+-----------------------------------------------------------------------------------+
-```
+### 🖥️ Dashboard Admin (Monitoring & Laporan)
+![Admin Dashboard Web](./docs/dashboard-web.png)
+
+### 📱 PWA Petugas Lapangan (Scan QR & Absensi)
+<img src="./docs/mobile-pwa.png" alt="Mobile PWA Satpam" width="360" />
 
 ---
 
