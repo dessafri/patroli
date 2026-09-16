@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
 import QRCode from "react-qr-code";
@@ -14,51 +14,34 @@ import {
 } from "../../components/ui/table";
 import Badge from "../../components/ui/badge/Badge";
 import { PlusIcon, PencilIcon, TrashBinIcon } from "../../icons";
-
-interface Checkpoint {
-  id: number;
-  name: string;
-  building: string;
-  floor: string;
-  zone: string;
-  qrId: string;
-  status: string;
-}
-
-const dummyData: Checkpoint[] = [
-  {
-    id: 1,
-    name: "Lobi Utama",
-    building: "Tower A",
-    floor: "Lantai Dasar",
-    zone: "Zona Publik",
-    qrId: "CP-TWA-LD-001",
-    status: "Active",
-  },
-  {
-    id: 2,
-    name: "Ruang Server",
-    building: "Tower A",
-    floor: "Lantai 5",
-    zone: "Zona Terbatas",
-    qrId: "CP-TWA-L5-002",
-    status: "Active",
-  },
-  {
-    id: 3,
-    name: "Area Parkir VIP",
-    building: "Tower B",
-    floor: "Basement 1",
-    zone: "Zona Parkir",
-    qrId: "CP-TWB-B1-001",
-    status: "Inactive",
-  },
-];
+import { ApiService, Checkpoint } from "../../services/api";
 
 export default function CheckpointList() {
-  const [data, setData] = useState<Checkpoint[]>(dummyData);
+  const [data, setData] = useState<Checkpoint[]>([]);
+  const [loading, setLoading] = useState(true);
   const [printModalOpen, setPrintModalOpen] = useState(false);
   const [selectedQrId, setSelectedQrId] = useState("");
+
+  const loadCheckpoints = async () => {
+    try {
+      setLoading(true);
+      const list = await ApiService.getCheckpoints();
+      setData(list);
+    } catch (err: any) {
+      console.error(err);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal memuat data",
+        text: err.message || "Gagal mengambil data checkpoint dari server.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadCheckpoints();
+  }, []);
 
   const handleOpenPrint = (qrId: string) => {
     setSelectedQrId(qrId);
@@ -108,7 +91,7 @@ export default function CheckpointList() {
     }
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     Swal.fire({
       title: "Apakah Anda yakin?",
       text: "Checkpoint yang dihapus tidak dapat dikembalikan!",
@@ -118,15 +101,24 @@ export default function CheckpointList() {
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, hapus!",
       cancelButtonText: "Batal"
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        setData(data.filter((item) => item.id !== id));
-        Swal.fire({
-          title: "Terhapus!",
-          text: "Checkpoint berhasil dihapus.",
-          icon: "success",
-          confirmButtonColor: "#3085d6"
-        });
+        try {
+          await ApiService.deleteCheckpoint(id);
+          setData(data.filter((item) => item.id !== id));
+          Swal.fire({
+            title: "Terhapus!",
+            text: "Checkpoint berhasil dihapus.",
+            icon: "success",
+            confirmButtonColor: "#3085d6"
+          });
+        } catch (err: any) {
+          Swal.fire({
+            icon: "error",
+            title: "Gagal menghapus",
+            text: err.message || "Terjadi kesalahan saat menghapus data.",
+          });
+        }
       }
     });
   };
@@ -183,8 +175,17 @@ export default function CheckpointList() {
           </div>
 
           <div className="max-w-full overflow-x-auto">
-            <Table>
-              {/* Table Header */}
+            {loading ? (
+              <div className="p-8 text-center text-gray-500 dark:text-gray-400">
+                Memuat data checkpoint...
+              </div>
+            ) : data.length === 0 ? (
+              <div className="p-8 text-center text-gray-500 dark:text-gray-400">
+                Belum ada data checkpoint. Silakan tambahkan checkpoint baru.
+              </div>
+            ) : (
+              <Table>
+                {/* Table Header */}
                 <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
                   <TableRow>
                     <TableCell
@@ -203,7 +204,7 @@ export default function CheckpointList() {
                       isHeader
                       className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                     >
-                      QR ID
+                      QR Token
                     </TableCell>
                     <TableCell
                       isHeader
@@ -235,27 +236,21 @@ export default function CheckpointList() {
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                         <Badge size="sm" color="light">
-                          {checkpoint.qrId}
+                          {checkpoint.qr_token}
                         </Badge>
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                         <Badge
                           size="sm"
-                          color={
-                            checkpoint.status === "Active"
-                              ? "success"
-                              : checkpoint.status === "Inactive"
-                              ? "warning"
-                              : "error"
-                          }
+                          color={checkpoint.is_active ? "success" : "error"}
                         >
-                          {checkpoint.status}
+                          {checkpoint.is_active ? "Active" : "Inactive"}
                         </Badge>
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
                         <div className="flex items-center justify-center gap-2">
                           <button
-                            onClick={() => handleOpenPrint(checkpoint.qrId)}
+                            onClick={() => handleOpenPrint(checkpoint.qr_token)}
                             className="text-gray-500 hover:text-brand-500 dark:text-gray-400 dark:hover:text-brand-500"
                             title="Cetak QR"
                           >
@@ -282,6 +277,7 @@ export default function CheckpointList() {
                   ))}
                 </TableBody>
               </Table>
+            )}
           </div>
         </div>
       </div>

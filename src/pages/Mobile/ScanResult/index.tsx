@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import Webcam from "react-webcam";
 import PageMeta from "../../../components/common/PageMeta";
 import { useOfflineQueue } from "../../../context/OfflineQueueContext";
+import { ApiService } from "../../../services/api";
 
 export default function MobileScanResult() {
   const [searchParams] = useSearchParams();
@@ -63,14 +64,10 @@ export default function MobileScanResult() {
         canvas.width = img.width;
         canvas.height = img.height;
 
-        // Gambar foto asli
         ctx.drawImage(img, 0, 0);
 
-        // Pengaturan gaya font watermark tengah (PATROLI.SITE & Checkpoint)
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        
-        // Shadow/stroke untuk teks agar terbaca di background terang/gelap
         ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
         ctx.shadowBlur = 10;
         ctx.shadowOffsetX = 2;
@@ -79,9 +76,8 @@ export default function MobileScanResult() {
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
 
-        // 1. Watermark Tengah: PATROLI.SITE (Lebih tipis, lebih besar, transparan)
-        ctx.font = "300 80px Arial"; // 300 = font-weight light
-        ctx.fillStyle = "rgba(255, 255, 255, 0.35)"; // Putih transparan
+        ctx.font = "300 80px Arial";
+        ctx.fillStyle = "rgba(255, 255, 255, 0.35)";
         ctx.fillText("PATROLI.SITE", centerX, centerY);
 
         const margin = 20;
@@ -90,22 +86,17 @@ export default function MobileScanResult() {
         const dateStr = now.toLocaleDateString("id-ID", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         const timeStr = now.toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
-        // Pengaturan gaya font untuk area bawah (Tebal dan jelas)
         ctx.font = "bold 24px Arial";
         ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
         ctx.textBaseline = "bottom";
 
-        // 2. Kiri Bawah: Tanggal & Waktu
         ctx.textAlign = "left";
         ctx.fillText(dateStr, margin, bottomY - 30);
         ctx.fillText(timeStr, margin, bottomY);
 
-        // 3. Tengah Bawah: Nama Checkpoint
         ctx.textAlign = "center";
-        // Posisikan sedikit di atas dasar agar sejajar secara visual dengan blok kiri/kanan
         ctx.fillText(`Lokasi: ${qrCode}`, centerX, bottomY - 15);
 
-        // 4. Kanan Bawah: Koordinat
         ctx.textAlign = "right";
         if (location) {
           ctx.fillText(`Lat: ${location.lat.toFixed(6)}`, canvas.width - margin, bottomY - 30);
@@ -114,7 +105,6 @@ export default function MobileScanResult() {
           ctx.fillText("Lokasi tidak ditemukan", canvas.width - margin, bottomY - 15);
         }
 
-        // Konversi canvas kembali ke gambar Base64
         resolve(canvas.toDataURL("image/jpeg", 0.8));
       };
       img.onerror = reject;
@@ -122,7 +112,6 @@ export default function MobileScanResult() {
     });
   };
 
-  // Fungsi Jepret Foto
   const capturePhoto = useCallback(async () => {
     if (webcamRef.current) {
       const imageSrc = webcamRef.current.getScreenshot();
@@ -151,7 +140,7 @@ export default function MobileScanResult() {
     setIsLoading(true);
 
     if (!isOnline) {
-      // Simpan ke Offline Queue
+      // Offline mode
       try {
         await addToQueue({
           id: `queue-${Date.now()}`,
@@ -165,9 +154,9 @@ export default function MobileScanResult() {
         setIsLoading(false);
         Swal.fire({
           title: "Tersimpan Lokal",
-          text: "Koneksi internet terputus. Laporan disimpan dan akan dikirim otomatis saat sinyal kembali.",
+          text: "Koneksi internet terputus. Laporan disimpan di IndexedDB dan akan disinkronkan otomatis saat online.",
           icon: "info",
-          confirmButtonColor: "#eab308", // warna warning-500
+          confirmButtonColor: "#eab308",
           confirmButtonText: "Mengerti",
         }).then(() => {
           navigate("/mobile/dashboard");
@@ -177,22 +166,38 @@ export default function MobileScanResult() {
         Swal.fire("Error", "Gagal menyimpan ke penyimpanan lokal.", "error");
       }
     } else {
-      // Simulasi pengiriman data langsung ke server
-      setTimeout(() => {
+      // Online mode: Submit direct ke API
+      try {
+        const res = await ApiService.submitScan({
+          qrToken: qrCode,
+          latitude: location.lat,
+          longitude: location.lng,
+          photoUrl: previewUrl,
+          notes: notes,
+        });
+
         setIsLoading(false);
-        
+
+        const isVerified = res.status === "verified";
         Swal.fire({
-          title: "Berhasil!",
-          text: "Laporan checkpoint telah tersimpan.",
-          icon: "success",
+          title: isVerified ? "Patroli Terverifikasi!" : "Peringatan Jarak",
+          text: isVerified
+            ? `Checkpoint ${res.checkpoint?.name || qrCode} berhasil diverifikasi (${res.distance}m).`
+            : `Posisi Anda (${res.distance}m) melebihi batas radius checkpoint. Laporan ditandai.`,
+          icon: isVerified ? "success" : "warning",
           confirmButtonColor: "#3B82F6",
-          confirmButtonText: "Kembali ke Dashboard",
-          timer: 3000,
-          timerProgressBar: true,
+          confirmButtonText: "Selesai",
         }).then(() => {
           navigate("/mobile/dashboard");
         });
-      }, 1500);
+      } catch (err: any) {
+        setIsLoading(false);
+        Swal.fire({
+          icon: "error",
+          title: "Gagal Mengirim",
+          text: err.message || "Terjadi kesalahan saat verifikasi ke server.",
+        });
+      }
     }
   };
 
@@ -212,7 +217,6 @@ export default function MobileScanResult() {
         </div>
 
         <div className="rounded-xl bg-white p-5 shadow-sm border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
-          {/* Header Info Checkpoint */}
           <div className="mb-6 flex flex-col gap-3 rounded-lg bg-gray-50 p-4 dark:bg-gray-700/50">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-600 dark:bg-brand-500/20 dark:text-brand-400">
@@ -227,7 +231,6 @@ export default function MobileScanResult() {
               </div>
             </div>
             
-            {/* Status GPS */}
             <div className="mt-1 flex items-start gap-2 border-t border-gray-200 dark:border-gray-600 pt-3">
               {locationError ? (
                 <>
@@ -251,7 +254,6 @@ export default function MobileScanResult() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Area Kamera / Foto */}
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Foto Bukti Kondisi <span className="text-error-500">*</span>
@@ -260,12 +262,10 @@ export default function MobileScanResult() {
               <div className="overflow-hidden rounded-xl border-2 border-gray-200 bg-black dark:border-gray-700">
                 {previewUrl ? (
                   <div className="relative">
-                    {/* Tampilan Hasil Foto + Watermark */}
                     <img src={previewUrl} alt="Hasil Foto" className="w-full object-contain" />
                   </div>
                 ) : (
                   <div className="relative">
-                    {/* Feed Kamera Langsung */}
                     <Webcam
                       audio={false}
                       ref={webcamRef}
@@ -275,7 +275,6 @@ export default function MobileScanResult() {
                       className="w-full object-cover aspect-[3/4]"
                     />
                     
-                    {/* Panduan Area Watermark (Bantuan Visual Opsional) */}
                     <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-30">
                       <div className="text-center">
                         <p className="text-3xl font-bold text-white tracking-widest drop-shadow-lg">PATROLI.SITE</p>
@@ -286,7 +285,6 @@ export default function MobileScanResult() {
                 )}
               </div>
 
-              {/* Tombol Kontrol Kamera */}
               <div className="mt-3 flex justify-center">
                 {previewUrl ? (
                   <button
@@ -321,7 +319,6 @@ export default function MobileScanResult() {
               </div>
             </div>
 
-            {/* Input Catatan */}
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Catatan (Opsional)
@@ -335,7 +332,6 @@ export default function MobileScanResult() {
               ></textarea>
             </div>
 
-            {/* Aksi */}
             <div className="pt-4 border-t border-gray-100 dark:border-gray-700">
               <button
                 type="submit"

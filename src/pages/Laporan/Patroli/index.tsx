@@ -1,33 +1,109 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PageMeta from "../../../components/common/PageMeta";
 import Swal from "sweetalert2";
+import { ApiService, PatrolLog } from "../../../services/api";
 
 export default function LaporanPatroli() {
-  const [isExportingPDF, setIsExportingPDF] = useState(false);
-  const [isExportingExcel, setIsExportingExcel] = useState(false);
+  const [logs, setLogs] = useState<PatrolLog[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const mockData = [
-    { id: 1, nama: "Andi Saputra", tanggal: "05 Jun 2026", rute: "Rute Alpha", totalCp: 12, scannedCp: 12, status: "Selesai", durasi: "1j 15m" },
-    { id: 2, nama: "Budi Santoso", tanggal: "05 Jun 2026", rute: "Rute Bravo", totalCp: 8, scannedCp: 5, status: "Berjalan", durasi: "45m" },
-    { id: 3, nama: "Deni Irawan", tanggal: "04 Jun 2026", rute: "Rute Charlie", totalCp: 15, scannedCp: 10, status: "Tidak Selesai", durasi: "2j 05m" },
-    { id: 4, nama: "Andi Saputra", tanggal: "04 Jun 2026", rute: "Rute Alpha", totalCp: 12, scannedCp: 12, status: "Selesai", durasi: "1j 10m" },
-  ];
+  const fetchLogs = async () => {
+    try {
+      setLoading(true);
+      const data = await ApiService.getPatrolLogs();
+      setLogs(data);
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const handleExport = (type: "pdf" | "excel") => {
-    if (type === "pdf") setIsExportingPDF(true);
-    if (type === "excel") setIsExportingExcel(true);
+  useEffect(() => {
+    fetchLogs();
+  }, []);
 
-    setTimeout(() => {
-      if (type === "pdf") setIsExportingPDF(false);
-      if (type === "excel") setIsExportingExcel(false);
+  const handleExportCSV = () => {
+    if (!logs.length) {
+      Swal.fire("Info", "Tidak ada data untuk diekspor", "info");
+      return;
+    }
 
-      Swal.fire({
-        title: "Ekspor Berhasil",
-        text: `Laporan Patroli telah diunduh dalam format ${type.toUpperCase()}.`,
-        icon: "success",
-        confirmButtonColor: "#3B82F6",
-      });
-    }, 2000);
+    const headers = ["ID Log", "Petugas", "Checkpoint", "Gedung / Lantai", "Status", "Jarak (m)", "Waktu Scan"];
+    const rows = logs.map((l) => [
+      `"${l.id}"`,
+      `"${l.officer_name || '-'}"`,
+      `"${l.checkpoint_name || '-'}"`,
+      `"${l.building || '-'} / ${l.floor || '-'}"`,
+      `"${l.status}"`,
+      `"${l.distance_meters}"`,
+      `"${new Date(l.created_at).toLocaleString('id-ID')}"`,
+    ]);
+
+    const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+    const link = document.createElement("a");
+    link.setAttribute("href", encodeURI(csvContent));
+    link.setAttribute("download", `Laporan_Patroli_${Date.now()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handlePrintPDF = () => {
+    const printWin = window.open("", "_blank");
+    if (!printWin) return;
+
+    const rowsHtml = logs.map((l) => `
+      <tr>
+        <td style="padding:6px;border:1px solid #ccc;">${l.officer_name || '-'}</td>
+        <td style="padding:6px;border:1px solid #ccc;">${l.checkpoint_name || '-'}</td>
+        <td style="padding:6px;border:1px solid #ccc;">${l.building || '-'} (${l.floor || '-'})</td>
+        <td style="padding:6px;border:1px solid #ccc;text-align:center;">${l.status}</td>
+        <td style="padding:6px;border:1px solid #ccc;text-align:center;">${l.distance_meters}m</td>
+        <td style="padding:6px;border:1px solid #ccc;">${new Date(l.created_at).toLocaleString('id-ID')}</td>
+      </tr>
+    `).join("");
+
+    printWin.document.write(`
+      <html>
+        <head>
+          <title>Laporan Patroli - Patroli.site</title>
+          <style>
+            body { font-family: sans-serif; padding: 20px; }
+            h2 { margin-bottom: 5px; }
+            p { color: #666; font-size: 12px; margin-top: 0; }
+            table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 15px; }
+            th { background: #f3f4f6; padding: 8px; border: 1px solid #ccc; text-align: left; }
+          </style>
+        </head>
+        <body>
+          <h2>Laporan Aktivitas Patroli Satpam</h2>
+          <p>Dicetak pada: ${new Date().toLocaleString('id-ID')}</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Petugas</th>
+                <th>Checkpoint</th>
+                <th>Lokasi</th>
+                <th>Status</th>
+                <th>Jarak</th>
+                <th>Waktu Scan</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml}
+            </tbody>
+          </table>
+          <script>
+            setTimeout(() => {
+              window.print();
+              window.close();
+            }, 500);
+          </script>
+        </body>
+      </html>
+    `);
+    printWin.document.close();
   };
 
   return (
@@ -45,100 +121,61 @@ export default function LaporanPatroli() {
           </div>
           <div className="flex items-center gap-3">
             <button
-              onClick={() => handleExport("excel")}
-              disabled={isExportingExcel || isExportingPDF}
-              className={`inline-flex items-center justify-center rounded-xl border border-success-500 px-4 py-2 text-sm font-medium transition-colors ${
-                isExportingExcel
-                  ? "bg-success-100 text-success-500 cursor-not-allowed dark:bg-success-500/20"
-                  : "bg-white text-success-600 hover:bg-success-50 hover:text-success-700 dark:bg-transparent dark:text-success-400 dark:hover:bg-success-500/10"
-              }`}
+              onClick={handleExportCSV}
+              className="inline-flex items-center justify-center rounded-xl border border-success-500 bg-white px-4 py-2 text-sm font-medium text-success-600 hover:bg-success-50 dark:bg-transparent dark:text-success-400"
             >
-              {isExportingExcel ? (
-                <svg className="mr-2 h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-              ) : (
-                <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              )}
-              Export Excel
+              Export CSV / Excel
             </button>
             <button
-              onClick={() => handleExport("pdf")}
-              disabled={isExportingPDF || isExportingExcel}
-              className={`inline-flex items-center justify-center rounded-xl bg-brand-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors ${
-                isExportingPDF ? "opacity-70 cursor-not-allowed" : "hover:bg-brand-600 active:scale-95"
-              }`}
+              onClick={handlePrintPDF}
+              className="inline-flex items-center justify-center rounded-xl bg-brand-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-brand-600 active:scale-95"
             >
-              {isExportingPDF ? (
-                <svg className="mr-2 h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-              ) : (
-                <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                </svg>
-              )}
               Export PDF
             </button>
           </div>
         </div>
 
-        {/* Filter Bar */}
-        <div className="flex flex-wrap items-center gap-3 rounded-2xl bg-white p-4 shadow-sm border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
-          <input type="date" className="rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white" defaultValue="2026-06-05" />
-          <span className="text-gray-400">s/d</span>
-          <input type="date" className="rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white" defaultValue="2026-06-05" />
-          <select className="rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white">
-            <option value="">Semua Rute</option>
-            <option value="Alpha">Rute Alpha</option>
-            <option value="Bravo">Rute Bravo</option>
-          </select>
-          <button className="rounded-xl bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">Filter</button>
-        </div>
-
         {/* Table */}
         <div className="overflow-hidden rounded-2xl bg-white shadow-sm border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-gray-600 dark:text-gray-400">
-              <thead className="bg-gray-50/50 text-xs uppercase text-gray-500 dark:bg-gray-900/50 dark:text-gray-400">
-                <tr>
-                  <th className="px-6 py-4 font-bold">Nama Petugas</th>
-                  <th className="px-6 py-4 font-bold">Tanggal</th>
-                  <th className="px-6 py-4 font-bold">Rute</th>
-                  <th className="px-6 py-4 font-bold text-center">Checkpoint</th>
-                  <th className="px-6 py-4 font-bold text-center">Durasi</th>
-                  <th className="px-6 py-4 font-bold text-center">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                {mockData.map((row) => (
-                  <tr key={row.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                    <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">{row.nama}</td>
-                    <td className="px-6 py-4">{row.tanggal}</td>
-                    <td className="px-6 py-4 font-medium">{row.rute}</td>
-                    <td className="px-6 py-4 text-center font-medium">
-                      <span className={row.scannedCp === row.totalCp ? "text-success-600" : "text-warning-600"}>
-                        {row.scannedCp}
-                      </span> / {row.totalCp}
-                    </td>
-                    <td className="px-6 py-4 text-center">{row.durasi}</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${
-                        row.status === "Selesai" ? "bg-success-50 text-success-700 border border-success-200 dark:bg-success-500/10 dark:border-success-500/20 dark:text-success-400"
-                        : row.status === "Berjalan" ? "bg-brand-50 text-brand-700 border border-brand-200 dark:bg-brand-500/10 dark:border-brand-500/20 dark:text-brand-400"
-                        : "bg-error-50 text-error-700 border border-error-200 dark:bg-error-500/10 dark:border-error-500/20 dark:text-error-400"
-                      }`}>
-                        {row.status}
-                      </span>
-                    </td>
+            {loading ? (
+              <div className="p-8 text-center text-gray-500">Memuat log patroli...</div>
+            ) : logs.length === 0 ? (
+              <div className="p-8 text-center text-gray-500">Belum ada rekaman patroli.</div>
+            ) : (
+              <table className="w-full text-left text-sm text-gray-600 dark:text-gray-400">
+                <thead className="bg-gray-50/50 text-xs uppercase text-gray-500 dark:bg-gray-900/50 dark:text-gray-400">
+                  <tr>
+                    <th className="px-6 py-4 font-bold">Nama Petugas</th>
+                    <th className="px-6 py-4 font-bold">Checkpoint</th>
+                    <th className="px-6 py-4 font-bold">Lokasi</th>
+                    <th className="px-6 py-4 font-bold text-center">Jarak</th>
+                    <th className="px-6 py-4 font-bold text-center">Status</th>
+                    <th className="px-6 py-4 font-bold">Waktu Scan</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                  {logs.map((row) => (
+                    <tr key={row.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                      <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">{row.officer_name || "Petugas"}</td>
+                      <td className="px-6 py-4 font-medium">{row.checkpoint_name}</td>
+                      <td className="px-6 py-4 text-xs">{row.building} • {row.floor}</td>
+                      <td className="px-6 py-4 text-center">{row.distance_meters}m</td>
+                      <td className="px-6 py-4 text-center">
+                        <span className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${
+                          row.status === "verified"
+                            ? "bg-success-50 text-success-700 border border-success-200 dark:bg-success-500/10 dark:text-success-400"
+                            : "bg-error-50 text-error-700 border border-error-200 dark:bg-error-500/10 dark:text-error-400"
+                        }`}>
+                          {row.status}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-xs">{new Date(row.created_at).toLocaleString("id-ID")}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
 

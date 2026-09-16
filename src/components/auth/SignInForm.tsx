@@ -5,26 +5,44 @@ import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
+import { ApiService } from "../../services/api";
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem("isLoggedIn", "true");
-    
-    // Redirect logic: jika petugas, ke mobile
-    if (email === "petugas@patroli.site") {
-      localStorage.setItem("userRole", "petugas");
-      navigate("/mobile/dashboard", { replace: true });
-    } else {
-      localStorage.setItem("userRole", "admin");
-      navigate("/", { replace: true });
+    setErrorMsg("");
+    setLoading(true);
+
+    try {
+      const res = await ApiService.login({ email, password });
+      localStorage.setItem("token", res.token);
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userRole", res.user.role);
+      localStorage.setItem("user", JSON.stringify(res.user));
+
+      if (res.user.role === "petugas") {
+        navigate("/mobile/dashboard", { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || "Gagal masuk, periksa email dan password.");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleQuickLogin = (quickEmail: string) => {
+    setEmail(quickEmail);
+    setPassword("12345678*#");
   };
 
   return (
@@ -36,11 +54,18 @@ export default function SignInForm() {
               Sign In
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Enter your email and password to sign in!
+              Masuk dengan akun Admin atau Petugas
             </p>
           </div>
+
+          {errorMsg && (
+            <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-900/30 dark:text-red-400">
+              {errorMsg}
+            </div>
+          )}
+
           <div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleLogin}>
               <div className="space-y-6">
                 <div>
                   <Label>
@@ -48,7 +73,7 @@ export default function SignInForm() {
                   </Label>
                   <Input 
                     type="email"
-                    placeholder="info@gmail.com" 
+                    placeholder="email@patroli.site" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -61,7 +86,7 @@ export default function SignInForm() {
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
+                      placeholder="Masukkan password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
@@ -87,39 +112,33 @@ export default function SignInForm() {
                   </div>
                 </div>
                 <div>
-                  <Button className="w-full" size="sm" type="submit">
-                    Sign in
+                  <Button className="w-full" size="sm" type="submit" disabled={loading}>
+                    {loading ? "Memproses..." : "Sign in"}
                   </Button>
                 </div>
               </div>
             </form>
 
-
-
-            <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700">
-              <h3 className="text-sm font-semibold mb-3 text-gray-800 dark:text-white/90">
-                Dummy Accounts
-              </h3>
-              <div className="flex gap-3">
+            <div className="mt-8 border-t border-gray-200 dark:border-gray-800 pt-6">
+              <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                Akun Demo Cepat:
+              </p>
+              <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
-                  className="px-3 py-1.5 text-xs font-medium text-brand-600 bg-brand-50 hover:bg-brand-100 rounded-md dark:bg-brand-900/20 dark:text-brand-400 dark:hover:bg-brand-900/40 transition-colors border border-brand-200 dark:border-brand-800"
-                  onClick={() => {
-                    setEmail("admin@patroli.site");
-                    setPassword("admin123");
-                  }}
+                  onClick={() => handleQuickLogin("admin@patroli.site")}
+                  className="flex flex-col items-center justify-center p-2.5 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-brand-500 dark:hover:border-brand-500 bg-gray-50 dark:bg-gray-800/50 transition"
                 >
-                  Admin
+                  <span className="text-xs font-bold text-gray-800 dark:text-white">Admin</span>
+                  <span className="text-[10px] text-gray-500">Dashboard Web</span>
                 </button>
                 <button
                   type="button"
-                  className="px-3 py-1.5 text-xs font-medium text-brand-600 bg-brand-50 hover:bg-brand-100 rounded-md dark:bg-brand-900/20 dark:text-brand-400 dark:hover:bg-brand-900/40 transition-colors border border-brand-200 dark:border-brand-800"
-                  onClick={() => {
-                    setEmail("petugas@patroli.site");
-                    setPassword("petugas123");
-                  }}
+                  onClick={() => handleQuickLogin("petugas@patroli.site")}
+                  className="flex flex-col items-center justify-center p-2.5 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-brand-500 dark:hover:border-brand-500 bg-gray-50 dark:bg-gray-800/50 transition"
                 >
-                  Petugas
+                  <span className="text-xs font-bold text-gray-800 dark:text-white">Petugas</span>
+                  <span className="text-[10px] text-gray-500">PWA Mobile</span>
                 </button>
               </div>
             </div>
